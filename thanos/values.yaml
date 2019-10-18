@@ -1,0 +1,30 @@
+grafana:
+  sidecar:
+    datasources:
+      defaultDatasourceEnabled: false
+  additionalDataSources:
+  - name: Prometheus
+    type: prometheus
+    url: http://thanos-query-http:10902
+    access: proxy
+    isDefault: true
+
+prometheus:
+  prometheusSpec:
+    replicas: 3
+    storageSpec: {}
+    #  volumeClaimTemplate:
+    #    spec:
+    #      storageClassName: gluster
+    #      accessModes: ["ReadWriteOnce"]
+    #      resources:
+    #        requests:
+    #          storage: 50Gi
+    #    selector: {}
+
+    thanos:
+      baseImage: quay.io/thanos/thanos
+      version: v0.7.0
+      objectStorageConfig:
+        key: thanos.yaml
+        name: thanos-objstore-config
